@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+.venv
+django_launchbox.egg-info
