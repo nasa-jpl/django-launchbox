@@ -8,8 +8,7 @@ import requests
 class LBResources:
     def __init__(self):
         bridge_endpoint = os.environ.get("LB_BRIDGE_API")
-        site_id = os.environ.get("LB_SITE_ID")
-        self.resources = requests.get(f"{bridge_endpoint}/{site_id}/resources").json()
+        self.resources = requests.get(f"{bridge_endpoint}/resources").json()
 
     def settings(self, resource_id):
         """Given a `resource_id`, return an appropriate Django settings dict.
