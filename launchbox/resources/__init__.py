@@ -7,25 +7,9 @@ import requests
 
 class LBResources:
     def __init__(self):
-        # api_endpoint = os.environ.get('LB_API_ENDPOINT')
-        # site_id = os.environ.get('LB_SITE_ID')
-        # self.resources = requests.get(f"{api_endpoint}/{site_id}/resources")
-        self.resources = {
-            "psqldb": {
-                "type": "postgres",
-                "values": {
-                    "hostname": "postgres.example.localhost",
-                    "name": "siteID_database",
-                    "username": "siteID",
-                    "password": "example",
-                    "port": 5342,
-                },
-            },
-            "rediscache": {
-                "type": "redis",
-                "values": {"url": "redis.example.localhost", "prefix": "siteID_cache"},
-            },
-        }
+        bridge_endpoint = os.environ.get("LB_BRIDGE_API")
+        site_id = os.environ.get("LB_SITE_ID")
+        self.resources = requests.get(f"{bridge_endpoint}/{site_id}/resources").json()
 
     def settings(self, resource_id):
         """Given a `resource_id`, return an appropriate Django settings dict.
@@ -77,3 +61,6 @@ class LBResources:
             },
             "KEY_PREFIX": resource["prefix"],
         }
+
+    def build_s3_settings(self, resource):
+        return resource["folder"]
