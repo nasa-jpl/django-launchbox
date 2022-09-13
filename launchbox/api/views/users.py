@@ -1,8 +1,11 @@
+import os
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-# TODO: Change from mocked LBMgmtAPI to the real thing when available.
-from ..utils import LBMgmtAPI, LBServiceAPI
+import requests
+
+from ..utils import LBServiceAPI
 
 USER_MODEL = get_user_model()
 
@@ -22,14 +25,23 @@ class Users:
         data = LBServiceAPI.request.json(request)
         if username := data.get("username"):
             # If using SSO, validate username
-            if LBMgmtAPI.dir and not LBMgmtAPI.dir.user.get(username):
-                return LBServiceAPI.response.error("invalid username")
-            # Verify user does not exist
-            if USER_MODEL.objects.filter(username=username).exists():
-                return LBServiceAPI.response.error("user already exists")
+            bridge_endpoint = os.environ.get("LB_BRIDGE_API")
+            service_id = os.environ.get("SERVICE_ID")
+            api_base = f"{bridge_endpoint}/{service_id}/identity"
+            if requests.get(api_base).status_code == 200:
+                if not requests.get(f"{api_base}/user/{username}"):
+                    return LBServiceAPI.response.error("invalid username")
+                # Verify user does not exist
+                if USER_MODEL.objects.filter(username=username).exists():
+                    return LBServiceAPI.response.error("user already exists")
 
             # Create user
+            # TODO: Handle situations with no identity provider
+            # JPLPersonnel currently has its own .user(username) method to get/create
+            # with LDAP integration; how do we let this method know that that exists?
+            # Should JPLPersonnel be redefining its own get_or_create() method?
             user = USER_MODEL.user(username)
+
             # Result
             result = {username: Users.parse(user)}
             return LBServiceAPI.response.json(result)
