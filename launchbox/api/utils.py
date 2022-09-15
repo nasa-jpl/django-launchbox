@@ -32,7 +32,7 @@ class LBServiceAPI:
                 return json.loads(request.body)
             except Exception:
                 logger.warning(
-                    "LBServiceAPI.json", "Unable to decode request body (invalid JSON)"
+                    "LBServiceAPI.request: Unable to decode request body (invalid JSON)"
                 )
             return False
 

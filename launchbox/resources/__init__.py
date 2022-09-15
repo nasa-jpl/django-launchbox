@@ -1,14 +1,38 @@
+import logging
 import os
 
 from django.core.exceptions import ImproperlyConfigured
 
 import requests
 
+logger = logging.getLogger(__name__)
+
 
 class LBResources:
-    def __init__(self):
-        bridge_endpoint = os.environ.get("LB_BRIDGE_API")
-        self.resources = requests.get(f"{bridge_endpoint}/resources").json()
+    @property
+    def bridge_endpoint(self):
+        return f"{os.environ.get('LB_BRIDGE_API')}/resources"
+
+    def get(self, resource_id=None):
+        # Call
+        if resource_id:
+            response = requests.get(f"{self.bridge_endpoint}/{resource_id}")
+        else:
+            response = requests.get(self.bridge_endpoint)
+        # Check
+        if response.status_code == 200:
+            try:
+                payload = response.json()
+            except Exception:
+                logger.error("LBResources.get: Unable to decode response JSON")
+                return False
+            else:
+                return payload
+        else:
+            logger.error(
+                f"LBResources.get: Invalid response [code: {response.status_code}]",
+            )
+            return False
 
     def settings(self, resource_id):
         """Given a `resource_id`, return an appropriate Django settings dict.
@@ -22,11 +46,13 @@ class LBResources:
 
         'mydatabase' is the name of the resource to be passed to this method.
         """
-        if resource_id in self.resources:
-            if resource_type := self.resources[resource_id].get("type"):
+        # resources = self.get()
+        # if resource_id in resources:
+        if resource := self.get(resource_id):
+            if resource_type := resource.get("type"):
                 fname = f"build_{resource_type}_settings"
                 if hasattr(self, fname) and callable(func := getattr(self, fname)):
-                    return func(self.resources[resource_id]["values"])
+                    return func(resource["values"])
                 else:
                     raise ImproperlyConfigured(
                         f"Resource '{resource_id}' has invalid type: '{resource_type}'"
