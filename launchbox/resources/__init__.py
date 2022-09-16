@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class LBResources:
-    @property
-    def bridge_endpoint(self):
-        return f"{os.environ.get('LB_BRIDGE_API')}/resources"
+    bridge_endpoint = f"{os.environ.get('LB_BRIDGE_API')}/resources"
 
     def get(self, resource_id=None):
         # Call
@@ -46,8 +44,6 @@ class LBResources:
 
         'mydatabase' is the name of the resource to be passed to this method.
         """
-        # resources = self.get()
-        # if resource_id in resources:
         if resource := self.get(resource_id):
             if resource_type := resource.get("type"):
                 fname = f"build_{resource_type}_settings"
