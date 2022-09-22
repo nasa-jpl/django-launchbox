@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class LBResources:
-    bridge_endpoint = f"{os.environ.get('LB_BRIDGE_API')}/resources"
+    bridge_endpoint = f"{os.environ.get('LB_CONNECT_API')}/resources"
 
     def get(self, resource_id=None):
         # Call
@@ -45,10 +45,11 @@ class LBResources:
         'mydatabase' is the name of the resource to be passed to this method.
         """
         if resource := self.get(resource_id):
-            if resource_type := resource.get("type"):
+            if params := resource.get("params"):
+                resource_type = params["type"]
                 fname = f"build_{resource_type}_settings"
                 if hasattr(self, fname) and callable(func := getattr(self, fname)):
-                    return func(resource["values"])
+                    return func(params)
                 else:
                     raise ImproperlyConfigured(
                         f"Resource '{resource_id}' has invalid type: '{resource_type}'"

@@ -1,22 +1,11 @@
 import json
 import logging
+import os
 from functools import update_wrapper
 
 from django.http import HttpResponse, JsonResponse
 
-# Remove these when the Launchbox management bridge API is available.
-# They currently pull from the existing code in WCP to feed the mock LBMgmtAPI class.
-from config.manage.bridge import WCPBridge
-from config.manage.jpl import WCPLDAP
-
 logger = logging.getLogger(__name__)
-
-
-class LBMgmtAPI:
-    """Temporarily mock Launchbox management bridge API endpoints."""
-
-    dir = WCPLDAP
-    port = WCPBridge.port
 
 
 class LBServiceAPI:
@@ -24,7 +13,7 @@ class LBServiceAPI:
         @staticmethod
         def auth(request):
             # Limit requests to internal port only.
-            return int(request.get_port()) == LBMgmtAPI.port
+            return int(request.get_port()) == os.environ.get("LB_BRIDGE_PORT")
 
         @staticmethod
         def json(request):
