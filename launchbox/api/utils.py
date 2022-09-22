@@ -13,7 +13,7 @@ class LBServiceAPI:
         @staticmethod
         def auth(request):
             # Limit requests to internal port only.
-            return int(request.get_port()) == os.environ.get("LB_SERVICE_BRIDGE_PORT")
+            return int(request.get_port()) == os.environ.get("LB_BRIDGE_PORT")
 
         @staticmethod
         def json(request):
