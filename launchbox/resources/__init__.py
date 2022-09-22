@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class LBResources:
-    bridge_endpoint = f"{os.environ.get('LB_BRIDGE_API')}/resources"
+    bridge_endpoint = f"{os.environ.get('LB_CONNECT_API')}/resources"
 
     def get(self, resource_id=None):
         # Call

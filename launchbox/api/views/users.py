@@ -25,7 +25,7 @@ class Users:
         data = LBServiceAPI.request.json(request)
         if username := data.get("username"):
             # If using SSO, validate username
-            bridge_endpoint = os.environ.get("LB_BRIDGE_API")
+            bridge_endpoint = os.environ.get("LB_CONNECT_API")
             api_base = f"{bridge_endpoint}/identity"
 
             if requests.get(api_base).status_code == 200:
