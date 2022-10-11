@@ -37,7 +37,7 @@ For more information on that, [visit the Launchbox docs](https://nasa-jpl.github
    from launchbox import LBResources
    
    DATABASES = {
-       # "database" is the resource identifier specified in your launch.yaml file
+       # "db" is the resource identifier specified in your launch.yaml file
        "default": LBResources().settings("db")
    }
    ```
@@ -47,10 +47,12 @@ For more information on that, [visit the Launchbox docs](https://nasa-jpl.github
      from launchbox import LBResources
      
      CACHES = {
-         "default": LBResources().settings("mycache")
+         # "cache" is the resource identifier specified in your launch.yaml file
+         "default": LBResources().settings("cache")
      }
      
-     # If using django-storages:
+     # AWS_STORAGE_BUCKET_NAME is a django-storages setting
+     # "storage" is the resource identifier specified in your launch.yaml file
      AWS_STORAGE_BUCKET_NAME = LBResources().settings("storage") 
    ```
 4. If you want to manage users in the Launchbox dashboard,
