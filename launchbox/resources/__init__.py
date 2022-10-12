@@ -85,4 +85,4 @@ class LBResources:
         }
 
     def build_s3_settings(self, resource):
-        return resource["folder"]
+        return resource["bucket"]
