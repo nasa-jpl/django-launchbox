@@ -55,7 +55,7 @@ For more information on that, [visit the Launchbox docs](https://nasa-jpl.github
      # AWS_STORAGE_BUCKET_NAME is a django-storages setting
      # "storage" is the resource identifier specified in your launch.yaml file
      AWS_STORAGE_BUCKET_NAME = LBResources().settings("storage") 
-   ```
+     ```
 4. If you want to manage users in the Launchbox dashboard,
    add the `LB_USER_ATTRIBUTES` setting to specify which user model fields
    and properties you want to log and validate:

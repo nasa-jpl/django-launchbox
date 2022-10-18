@@ -1,6 +1,36 @@
+[project]
+name = "django-launchbox"
+version = "1.0"
+authors = [
+  { name="Scott Cranfill", email="scott.cranfill@jpl.nasa.gov" },
+]
+description = "A plugin for your Django app to assist in integrating with Launchbox."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nasa-jpl/django-launchbox"
+"Bug Tracker" = "https://github.com/nasa-jpl/django-launchbox/issues"
+
 [build-system]
-requires = ['setuptools>=60.2.0', 'wheel']
-build-backend = 'setuptools.build_meta:__legacy__'
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.isort]
 profile = "black"
