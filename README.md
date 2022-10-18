@@ -9,14 +9,15 @@ A plugin for your Django app to assist in integrating with [Launchbox](https://g
 
 The plugin currently offers the following features:
 
-- A helper for easier configuration of settings for resources provided by Launchbox,
+- A helper class for easier configuration of settings for resources provided by Launchbox,
   like databases, caches, and storage buckets
+- A class for querying an identity service provided by a Launchbox plugin
 - An API for Launchbox to get information from your application so that
   it can display, or even change, that info within the Launchbox Management Dashboard
 
 ### Planned features
 
-- Integrations with Launchbox plugins for identity, authentication, and SSL certificate management
+- Integrations with other Launchbox plugin types – authentication and SSL certificate management
 
 
 ## Installation
