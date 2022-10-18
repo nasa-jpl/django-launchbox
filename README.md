@@ -79,3 +79,50 @@ For more information on that, [visit the Launchbox docs](https://nasa-jpl.github
    # Launchbox Service Bridge API
    path("bridge/", include("launchbox.api.urls")),
    ```
+
+
+## Working with Launchbox plugins
+
+### Identity providers
+
+Use the `LBIdendity` class to query an identity service provided by a Launchbox plugin.
+For all examples given below, be sure you have imported the class with:
+
+```python
+from launchbox import LBIdentity
+```
+
+You will need to know a plugin's `plugin_id` (an identifier internal to Launchbox) to work with it.
+
+#### Get a specific user
+
+To get a user's details when you know their exact user ID within the identity database, use the `user.get()` method:
+
+```python
+user_details = LBIdentity("plugin_id").user.get("user_id")
+```
+
+#### Search for a user with partial matching
+
+To search for a user when you aren't certain of their user ID, use the `user.search()` method:
+
+```python
+user_details = LBIdentity("plugin_id").user.search("user_id")
+```
+
+#### Get the groups a user belongs to
+
+For identity providers that can place users into groups,
+you can get a list of a user's groups with the `user.groups()` method:
+
+```python
+user_groups = LBIdentity("plugin_id").user.groups("user_id")
+```
+
+#### Get group details
+
+To get the details of a group, use the `group.get()` method:
+
+```python
+group_details = LBIdentity("plugin_id").group.get("group_id")
+```
